@@ -12,7 +12,7 @@ MEM：`4G及以上`
 
 ## 架构
 
-![architecture-ha-k8s-cluster](https://kubesphere.com.cn/images/docs/installing-on-linux/high-availability-configurations/set-up-ha-cluster-using-keepalived-haproxy/architecture-ha-k8s-cluster.png)
+![architecture-ha-k8s-cluster](https://raw.githubusercontent.com/kongyu666/kubeeasy/main/images/architecture-ha-k8s-cluster.png)
 
 ## 功能
 
