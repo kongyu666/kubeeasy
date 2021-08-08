@@ -26,7 +26,7 @@ MEM：`4G及以上`
 ## 快速开始
 
 ```shell
-bash kubeeasy.sh init \
+./kubeeasy init \
   --master 10.24.2.32 \
   --worker 10.24.2.45 \
   --user root \
