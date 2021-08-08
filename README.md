@@ -6,7 +6,7 @@ CPU：`2C及以上`
 
 MEM：`4G及以上`
 
-认证：集群节点需**统一认证**; 使用密码认证时，集群节点需使用同一用户名和密码。
+认证：集群节点需**统一认证**；使用密码认证时，集群节点需使用同一用户名和密码。
 
 运行：在预设的master节点执行
 
@@ -30,7 +30,6 @@ bash kubeeasy.sh init \
   --master 10.24.2.32 \
   --worker 10.24.2.45 \
   --user root \
-  --password 000000 \
-  --offline-file kubeeasy.tar.gz
+  --password 000000
 ```
 
