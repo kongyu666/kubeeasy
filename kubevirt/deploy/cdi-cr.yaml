@@ -1,0 +1,18 @@
+apiVersion: cdi.kubevirt.io/v1beta1
+kind: CDI
+metadata:
+  name: cdi
+spec:
+  imagePullPolicy: IfNotPresent
+  config:
+    insecureRegistries: 
+    - "0.0.0.0/0"
+  infra:
+    nodeSelector:
+      kubernetes.io/os: linux
+    tolerations:
+    - key: CriticalAddonsOnly
+      operator: Exists
+  workload:
+    nodeSelector:
+      kubernetes.io/os: linux

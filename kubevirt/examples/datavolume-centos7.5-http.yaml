@@ -1,0 +1,16 @@
+apiVersion: cdi.kubevirt.io/v1beta1
+kind: DataVolume
+metadata:
+  name: datavolume-centos7.5-http
+spec:
+  source:
+    http:
+      url: "http://10.24.3.1/CentOS-7.5-1804-x86_64.qcow2"
+  pvc:
+    storageClassName: nfs-server
+    accessModes:
+      - ReadWriteOnce
+    resources:
+      requests:
+        storage: 20Gi
+

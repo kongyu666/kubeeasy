@@ -1,0 +1,51 @@
+apiVersion: kubevirt.io/v1
+kind: VirtualMachineInstanceReplicaSet
+metadata:
+  name: testreplicaset
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      myvmi: myvmi
+  template:
+    metadata:
+      name: test
+      labels:
+        myvmi: myvmi
+    spec:
+      hostname: "test"
+      domain:
+        devices:
+          disks:
+          - name: containerdisk
+            disk:
+              bus: virtio
+          - name: emptydisk
+            disk:
+              bus: virtio
+          - name: cloudinitdisk
+            disk:
+              bus: virtio
+          interfaces:
+          - name: default
+            bridge: {}
+        resources:
+          requests:
+            memory: 2Gi
+            cpu: "1"
+      terminationGracePeriodSeconds: 0
+      networks:
+      - name: default
+        pod: {}
+      volumes:
+      - name: containerdisk
+        containerDisk:
+          image: swr.cn-north-1.myhuaweicloud.com/kongyu/kubevirt/centos:centos7.9.2009
+      - name: emptydisk
+        emptyDisk:
+          capacity: 10Gi
+      - name: cloudinitdisk
+        cloudInitNoCloud:
+          userData: |
+            #!/bin/sh
+            echo 000000 | passwd --stdin root

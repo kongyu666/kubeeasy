@@ -1,0 +1,53 @@
+---
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  labels:
+    kubevirt.io/vm: vm-centos7.5
+  name: vm-centos7.5-datavolume
+spec:
+  dataVolumeTemplates:
+  - metadata:
+      creationTimestamp: null
+      name: vm-centos7.5-datavolume
+    spec:
+      pvc:
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: 20Gi
+        storageClassName: nfs-server
+      source:
+        http:
+          url: "http://10.24.3.1/CentOS-7.5-1804-x86_64.qcow2"
+  running: true
+  template:
+    metadata:
+      labels:
+        kubevirt.io/vm: vm-centos7.5
+    spec:
+      domain:
+        devices:
+          disks:
+          - name: datavolume1
+            disk:
+              bus: virtio
+          - name: cloudinitdisk
+            disk:
+              bus: virtio
+        resources:
+          requests:
+            memory: 1Gi
+      terminationGracePeriodSeconds: 0
+      volumes:
+      - name: datavolume1
+        dataVolume:
+          name: vm-centos7.5-datavolume
+      - name: cloudinitdisk
+        cloudInitNoCloud:
+          userData: |
+            #!/bin/sh
+            echo 000000 | passwd --stdin root
+
+
