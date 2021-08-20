@@ -3653,7 +3653,7 @@ spec:
             # Auto-detect the BGP IP address.
             - name: IP
               value: "autodetect"
-            # Enable IPIP
+            # Enable IPIP. CrossSubnet | Never | Always
             - name: CALICO_IPV4POOL_IPIP
               value: "Never"
             # Enable or Disable VXLAN on the default IP pool.
