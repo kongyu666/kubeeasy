@@ -10,10 +10,6 @@ MEM：`4G及以上`
 
 运行：在预设的master节点执行
 
-## 架构
-
-![architecture-ha-k8s-cluster](https://raw.githubusercontent.com/kongyu666/kubeeasy/main/images/architecture-ha-k8s-cluster.png)
-
 ## 功能
 
 - 支持升级集群内核，升级后内核版本为：5.13.2
