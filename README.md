@@ -26,7 +26,7 @@ MEM：`4G及以上`
 ## 快速开始
 
 ```shell
-wget http://xxx
+wget https://github.com/kongyu666/kubeeasy/releases/download/v1.0/kubeeasy-centos7.9-v1.0
 chmod +x kubeeasy && mv kubeeasy /usr/bin
 kubeeasy install kubernetes \
   --master 10.24.2.10 \
