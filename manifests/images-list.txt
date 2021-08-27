@@ -1,5 +1,4 @@
 ##training
-#docker login -pcqyidaoyun123 --username=江苏一道云科技发展有限公司 registry.cn-hangzhou.aliyuncs.com
 registry.cn-hangzhou.aliyuncs.com/zhixuetong-images/ydy-m-train_allinone-openstackc:v1.0-b3
 registry.cn-hangzhou.aliyuncs.com/zhixuetong-images/ydy-m-train_allinone-openstackc:v1.0-b2
 registry.cn-hangzhou.aliyuncs.com/zhixuetong-images/ydy-m-train_allinone-openstackc:v1.0-b1
