@@ -1,0 +1,155 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongo-mgt
+  namespace: test
+  labels:
+    app: mongo-mgt
+spec:
+  ports:
+  - port: 27017
+    targetPort: 27017
+    nodePort: 27018
+  type: NodePort
+  selector:
+    app: mongo-prod
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongo-prod
+  namespace: test
+  labels:
+    app: mongo-prod
+spec:
+  ports:
+  - port: 27017
+    targetPort: 27017
+  clusterIP: None
+  selector:
+    app: mongo-prod
+---
+
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: mongo-prod
+  namespace: test
+---
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: mongo-prod
+rules:
+  - apiGroups: [""]
+    resources: ["pods"]
+    verbs: ["get", "list"]
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: mongo-prod
+subjects:
+  - kind: ServiceAccount
+    name: mongo-prod
+    namespace: test
+roleRef:
+  kind: ClusterRole
+  name: mongo-prod
+  apiGroup: rbac.authorization.k8s.io
+---
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: mongo-prod
+  namespace: test
+rules:
+  - apiGroups: [""]
+    resources: ["pods"]
+    verbs: ["get", "list"]
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: mongo-prod
+  namespace: storage
+subjects:
+  - kind: ServiceAccount
+    name: mongo-prod
+    namespace: test
+roleRef:
+  kind: Role
+  name: mongo-prod
+  apiGroup: rbac.authorization.k8s.io
+
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name     : mongo-prod
+  namespace: test
+spec:
+  replicas: 3
+  serviceName : mongo-prod
+  selector:
+    matchLabels:  ## 应用标签
+      app: mongo-prod
+  template:
+    metadata:
+      labels:
+        app: mongo-prod
+    spec:
+      serviceAccountName: mongo-prod
+      terminationGracePeriodSeconds: 10
+      containers:
+        - name: mongo-prod
+          image: swr.cn-north-1.myhuaweicloud.com/kongyu/mongo:4.1.7-2
+          imagePullPolicy: "Always"
+          args:
+            - mongod
+            - "--replSet"
+            - rs0
+            - "--bind_ip"
+            - 0.0.0.0
+            - --auth
+            - --clusterAuthMode
+            - keyFile
+            - --keyFile
+            - /data/config/mongodb-keyfile
+          env:
+          - name: MONGO_INITDB_ROOT_USERNAME
+            value: "admin"
+          - name: MONGO_INITDB_ROOT_PASSWORD
+            value: "123456"
+          ports:
+            - containerPort: 27017
+          volumeMounts:
+            - name     : mongo-prod
+              mountPath: "/data/db"
+        - name: mongo-sidecar
+          image: swr.cn-north-1.myhuaweicloud.com/kongyu/mongo-k8s-sidecar:vlatest
+          imagePullPolicy: "Always"
+          env:
+            - name: MONGO_SIDECAR_POD_LABELS
+              value: "app=mongo-prod"
+            - name: KUBERNETES_MONGO_SERVICE_NAME
+              value: "mongo-prod"
+            - name: MONGODB_USERNAME
+              value: "admin"
+            - name: MONGODB_PASSWORD
+              value: "123456"
+            - name: MONGODB_DATABASE
+              value: admin
+            - name: MONGO_PORT
+              value: "27017"
+
+  volumeClaimTemplates:
+  - metadata:
+      name: mongo-prod
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      storageClassName: local
+      resources:
+        requests:
+          storage: 10Gi
+

@@ -1,0 +1,147 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  namespace: test  ## 命名空间
+  name: mysql
+type: Opaque
+data:
+  # Root password (base64): 000000
+  password: MDAwMDAw
+---
+#
+# MariaDB 10.1 Galera Cluster
+#
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: test  ## 命名空间
+#  annotations:
+#    service.alpha.kubernetes.io/tolerate-unready-endpoints: "true"
+  name: mysql
+  labels:
+    app: mysql
+spec:
+  ports:
+  - port: 3306
+    name: mysql
+  clusterIP: None
+#    targetPort: 3306
+#    nodePort: 31306
+#  type: NodePort
+  selector:
+    app: mysql
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: test  ## 命名空间
+  name: mysql-config-vol
+data:
+  galera.cnf: |
+    [galera]
+    user = mysql
+    bind-address = 0.0.0.0
+
+    default_storage_engine = InnoDB
+    binlog_format = ROW
+    innodb_autoinc_lock_mode = 2
+    innodb_flush_log_at_trx_commit = 0
+    query_cache_size = 0
+    query_cache_type = 0
+
+    # MariaDB Galera settings
+    wsrep_on=ON
+    wsrep_provider=/usr/lib/galera/libgalera_smm.so
+    wsrep_sst_method=rsync
+
+    # Cluster settings (automatically updated)
+    wsrep_cluster_address=gcomm://
+    wsrep_cluster_name=galera
+    wsrep_node_address=127.0.0.1
+  mariadb.cnf: |
+    [client]
+    default-character-set = utf8
+    [mysqld]
+    character-set-server  = utf8
+    collation-server      = utf8_general_ci
+    # InnoDB tuning
+    innodb_log_file_size  = 50M
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  namespace: test  ## 命名空间
+  name: mysql
+spec:
+  serviceName: "mysql"
+  selector:
+    matchLabels:
+      app: mysql
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      initContainers:
+      - name: copy-mariadb-config
+        image: busybox
+        command: ['sh', '-c', 'cp -v /configmap/* /etc/mysql/mariadb.conf.d']
+        volumeMounts:
+        - name: configmap
+          mountPath: /configmap
+        - name: config
+          mountPath: /etc/mysql/mariadb.conf.d
+      containers:
+      - name: mysql
+        image: ausov/k8s-mariadb-cluster
+        ports:
+        - containerPort: 3306
+          name: mysql
+        - containerPort: 4444
+          name: sst
+        - containerPort: 4567
+          name: replication
+        - containerPort: 4568
+          name: ist
+        env:
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.namespace
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql
+              key: password
+        readinessProbe:
+          exec:
+            command: ["bash", "-c", "mysql -uroot -p\"${MYSQL_ROOT_PASSWORD}\" -e 'show databases;'"]
+          initialDelaySeconds: 20
+          timeoutSeconds: 5
+        volumeMounts:
+        - name: config
+          mountPath: /etc/mysql/conf.d
+        - name: datadir
+          mountPath: /var/lib/mysql
+      volumes:
+      - name: config
+        emptyDir: {}
+      - name: configmap
+        configMap:
+          name: mysql-config-vol
+          items:
+            - path: "galera.cnf"
+              key: galera.cnf
+            - path: "mariadb.cnf"
+              key: mariadb.cnf
+  volumeClaimTemplates:
+  - metadata:
+      name: datadir
+    spec:
+#      storageClassName: nfs-store
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 10Gi

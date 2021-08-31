@@ -1,0 +1,80 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: test
+  labels: ## 标签
+    app: test
+  annotations:
+    ## 描述信息
+    kubesphere.io/description: mariadb template
+data:
+  galera.cnf: |
+    [galera]
+    user = mysql
+    bind-address = 0.0.0.0
+
+    default_storage_engine = InnoDB
+    binlog_format = ROW
+    innodb_autoinc_lock_mode = 2
+    innodb_flush_log_at_trx_commit = 0
+    query_cache_size = 0
+    query_cache_type = 0
+
+    # MariaDB Galera settings
+    wsrep_on=ON
+    wsrep_provider=/usr/lib/galera/libgalera_smm.so
+    wsrep_sst_method=rsync
+
+    # Cluster settings (automatically updated)
+    wsrep_cluster_address=gcomm://
+    wsrep_cluster_name=galera
+    wsrep_node_address=127.0.0.1
+  mariadb.cnf: |
+    [client]
+    default-character-set = utf8
+    [mysqld]
+    character-set-server  = utf8
+    collation-server      = utf8_general_ci
+    # InnoDB tuning
+    innodb_log_file_size  = 50M
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: nginx
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx
+        ports:
+          - containerPort: 80
+        volumeMounts:  ## 存储卷挂载
+          - name: config
+            mountPath: /opt/
+          - name: localtime  ## 匹配存储卷
+            mountPath: /etc/localtime  ## 存储卷挂载路径
+            readOnly: true  ## 只读挂载
+      volumes: ## 存储卷
+        - name: config  ## 指定configMap
+          configMap:
+            name: test
+            items:
+              - path: "galera.cnf"
+                key: galera.cnf
+              - path: "mariadb.cnf"
+                key: mariadb.cnf
+        - name: localtime  ## 同步主机时间
+          hostPath: ## 从宿主机挂载
+            type: File  ## 文件类型
+            path: /etc/localtime  ## 宿主机路径
