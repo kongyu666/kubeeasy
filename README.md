@@ -454,7 +454,13 @@ kubeeasy add \
 >  增加master节点只适用于高可用集群的模式
 
 ```shell
-# 需要先安装依赖包，见**离线安装方式.1.2 集群安装依赖包**
+# 需要先安装依赖包
+kubeeasy install depend \
+  --host 10.24.3.14,10.24.3.15 \
+  --user root \
+  --password 000000 \
+  --offline-file dependencies/centos-7-rpms.tar.gz
+# 加入K8S集群
 kubeeasy add \
  --worker 10.24.3.14,10.24.3.15
  --user root \
