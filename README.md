@@ -66,7 +66,7 @@ kubeeasy install kubernetes \
 
 ## 在线安装方式
 
- **注意：**确保有正常可用的yum源
+**注意: ** 确保有正常可用的yum源
 
 ### 1.1 安装kubeeasy
 
