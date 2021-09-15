@@ -1,0 +1,3 @@
+*.yaml linguist-language=yaml
+*.sh linguist-language=shell
+*.txt linguist-language=txt
