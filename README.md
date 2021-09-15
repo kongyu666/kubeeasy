@@ -70,7 +70,7 @@ kubeeasy install kubernetes \
 
 ### 1.1 安装kubeeasy
 
-将kubeeasy文件上传至预设的master节点/root目录，赋予执行权限并移动到/usr/bin目录下。
+下载kubeeasy，然后赋予执行权限并移动到/usr/bin目录下。
 
 ```shell
 wget https://github.com/kongyu666/kubeeasy/releases/download/v1.2.0/kubeeasy-centos7.9-v1.2.0
@@ -221,7 +221,7 @@ kubeeasy add --virt kubevirt
 
 ### 1.1 安装kubeeasy
 
-将kubeeasy文件上传至预设的master节点/root目录，赋予执行权限并移动到/usr/bin目录下。
+将kubeeasy文件上传至预设的master节点/root目录，然后赋予执行权限并移动到/usr/bin目录下。
 
 ```shell
 chmod +x kubeeasy-centos7.9-v1.2.0 && mv kubeeasy-centos7.9-v1.2.0 /usr/bin/kubeeasy 
@@ -283,6 +283,7 @@ kubeeasy create mount-disk \
 kubeeasy mount \
  --host 10.24.3.11 \
  --disk sdb \
+ --mount-dir /data/ \
  --user root \
  --password 000000
 ```
