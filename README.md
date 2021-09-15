@@ -4,8 +4,8 @@ v1.2.0
 
 ## 架构
 
-![kube-vip1](https://gitee.com/kongyu1/files/raw/main/other/kube-vip1.png)
-![kube-vip2](https://gitee.com/kongyu1/files/raw/main/other/kube-vip2.png)
+![kube-vip1](https://gitee.com/iskongyu/files/raw/main/other/kube-vip1.png)
+![kube-vip2](https://gitee.com/iskongyu/files/raw/main/other/kube-vip2.png)
 
 ## 要求
 
