@@ -145,7 +145,7 @@ kubeeasy install upgrade-kernel \
 
 ### 1.5 部署K8S集群
 
-使用kubeeasy部署K8S集群，以下分为【普通集群】和【高可用集群】的安装方式，根据实际情况选择一种方案部署。安装后的K8S的版本为v1.21.3，使用docker作为容器运行时，网络组件使用calico网络，默认还安装kuboard图形化管理器和K8S存储类（nfs和local-path），K8S的证书有效期为100年，且开启了证书轮换。
+使用kubeeasy部署K8S集群，以下分为**普通集群**和**高可用集群**的安装方式，根据实际情况选择一种方案部署。安装后的K8S的版本为v1.21.3，使用docker作为容器运行时，网络组件使用calico网络，默认还安装kuboard图形化管理器和K8S存储类（nfs和local-path），K8S的证书有效期为100年，且开启了证书轮换。
 
 如需更改K8S的Pod网段，修改--pod-cidr参数相应的值。
 
@@ -307,7 +307,7 @@ kubeeasy install upgrade-kernel \
 
 ### 1.6 部署K8S集群
 
-使用kubeeasy部署K8S集群，以下分为【普通集群】和【高可用集群】的安装方式，根据实际情况选择一种方案部署。安装后的K8S的版本为v1.21.3，使用docker作为容器运行时，网络组件使用calico网络，默认还安装kuboard图形化管理器和K8S存储类（nfs和local-path），K8S的证书有效期为100年，且开启了证书轮换。
+使用kubeeasy部署K8S集群，以下分为**普通集群**和**高可用集群**的安装方式，根据实际情况选择一种方案部署。安装后的K8S的版本为v1.21.3，使用docker作为容器运行时，网络组件使用calico网络，默认还安装kuboard图形化管理器和K8S存储类（nfs和local-path），K8S的证书有效期为100年，且开启了证书轮换。
 
 如需更改K8S的Pod网段，修改--pod-cidr参数相应的值。
 
@@ -438,7 +438,7 @@ kubeeasy reset --force \
 
 使用kubeeasy将新的节点加入K8S集群中
 
-1. 增加K8S节点
+1. 在线增加K8S节点
 
 >  增加master节点只适用于高可用集群的模式
 
@@ -447,6 +447,19 @@ kubeeasy add \
  --worker 10.24.3.14,10.24.3.15
  --user root \
  --password 000000
+```
+
+2. 离线增加K8S节点
+
+>  增加master节点只适用于高可用集群的模式
+
+```shell
+# 需要先安装依赖包，见**离线安装方式.1.2 集群安装依赖包**
+kubeeasy add \
+ --worker 10.24.3.14,10.24.3.15
+ --user root \
+ --password 000000 \
+ --offline-file kubeeasy.tar.gz
 ```
 
 ### 删除K8S节点
