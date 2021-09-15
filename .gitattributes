@@ -1,4 +1,4 @@
-*.md linguist-language=Makedown
+*.md linguist-language=Markdown
 *.yaml linguist-language=YAML
 *.sh linguist-language=Shell
 *.txt linguist-language=Test
