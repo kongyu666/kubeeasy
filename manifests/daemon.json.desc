@@ -1,0 +1,40 @@
+{
+  "log-driver": "json-file",
+  ## 配置日志策略，日志最大200M，最多产生5个文件
+  "log-opts": {
+    "max-size": "200m",
+    "max-file": "5"
+  },
+  "default-ulimits": {
+    ## 进程打开文件数目
+    "nofile": {
+      "Name": "nofile",
+      "Hard": 655360,
+      "Soft": 655360
+    },
+	## 能打开的进程多少	
+    "nproc": {
+      "Name": "nproc",
+      "Hard": 655360,
+      "Soft": 655360
+    }
+  },
+  ## 支持在守护进程停机期间保持容器处于活动状态
+  "live-restore": true,
+  ## 设置守护程序的oom_score_adj，-1000表示禁止OOM killer杀死进程
+  "oom-score-adjust": -1000,
+  ## 设置每次pull的最大并发下载(default 3)
+  "max-concurrent-downloads": 10,
+  ## 设置每次push的最大并发上传(default 5)
+  "max-concurrent-uploads": 10,
+  ## 使用的存储驱动器
+  "storage-driver": "overlay2",
+  ## 覆盖内核检查
+  "storage-opts": ["overlay2.override_kernel_check=true"],
+  ## 设置不安全的仓库(http)
+  "insecure-registries": ["0.0.0.0/0"],
+  ## 设置镜像加速
+  "registry-mirrors": [
+    "https://registry.cn-hangzhou.aliyuncs.com"
+  ]
+}
