@@ -1,0 +1,55 @@
+apiVersion: kubevirt.io/v1alpha3
+kind: VirtualMachineInstance
+metadata:
+  namespace: kubevirt-training
+  name: vmi-test19
+spec:
+  terminationGracePeriodSeconds: 0
+  domain:
+    cpu:
+      cores: 4  #vCPUS数量，CPU已开启10倍虚拟化
+    resources:
+      overcommitGuestOverhead: true
+    memory:
+      guest: 12Gi  #该值为开启虚拟化以后的值，如虚拟化倍数为1.5倍，则该处实际请求的内存为6Gi
+    devices:
+      disks:
+      - name: containerdisk #系统盘（必选）
+        disk:
+          bus: virtio
+      - name: emptydisk  #附加磁盘（可选，因实验要求而异）
+        disk:
+          bus: virtio
+      - name: cloudinitdisk  #云服务器初始化工具（必选，用于设置启动参数）
+        disk:
+          bus: virtio
+      interfaces:
+      - name: default  #默认网卡，使用Kubernetes默认的CNI（必选） 
+        bridge: {}
+      - name: macvlan  #附加网卡（可选，因实验要求而异）
+        bridge: {}
+    features:
+      acpi:
+        enabled: true
+    machine:
+      type: q35
+  networks:
+  - name: default  #对应上面默认网卡
+    pod: {}
+  - multus:  #对应上面附加网卡
+      networkName: macvlan
+    name: macvlan
+  volumes:
+  - name: containerdisk  #对应上面系统盘，此处指定系统镜像,无需指定磁盘大小
+    containerDisk:
+      image: 10.24.1.32/kubevirt/ydy-s-centos7.2-kubevirtc-yccjs9-10:v1.0
+  - name: emptydisk  #对应上面附加磁盘，根据实验要求指定大小
+    emptyDisk:
+      capacity: 20Gi
+  - name: cloudinitdisk  #对应上面云服务器初始化工具，后跟启动参数，可叠加多条
+    cloudInitNoCloud:
+      userData: |-
+        #!/bin/sh
+        echo Abc@1234 | passwd --stdin root
+        dhclient eth1 >/dev/null 2>&1  #开启第二张网卡DHCP
+        timedatectl set-timezone Asia/Shanghai >/dev/null 2>&1  #设置时区

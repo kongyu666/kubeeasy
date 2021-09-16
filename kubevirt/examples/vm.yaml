@@ -1,0 +1,58 @@
+---
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  labels:
+    kubevirt.io/vm: vm-test79
+  name: vm-test79
+spec:
+  running: true
+  template:
+    metadata:
+      labels:
+        kubevirt.io/vm: vm-test79
+    spec:
+      domain:
+        cpu:
+          cores: 2
+          sockets: 1
+          threads: 1
+        resources:
+          requests:
+            memory: 8Gi
+        devices:
+          disks:
+          - name: containerdisk
+            disk:
+              bus: virtio
+          - name: emptydisk
+            disk:
+              bus: virtio
+          - name: cloudinitdisk
+            disk:
+              bus: virtio
+          interfaces:
+          - name: default
+            bridge: {}
+          - name: macvlan
+            bridge: {}
+      terminationGracePeriodSeconds: 0
+      networks:
+      - name: default
+        pod: {}
+      - multus:
+          networkName: default/macvlan
+        name: macvlan
+      volumes:
+      - name: containerdisk
+        containerDisk:
+          image: 10.24.1.32/library/kubevirt-openstack-train-allinone:v1.0
+      - name: emptydisk
+        emptyDisk:
+          capacity: 10Gi
+      - name: cloudinitdisk
+        cloudInitNoCloud:
+          userData: |
+            #!/bin/sh
+            echo 000000 | passwd --stdin root 
+            dhclient eth1
