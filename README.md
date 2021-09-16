@@ -522,11 +522,10 @@ kubeeasy push image-file \
 
 使用kubeeasy将容器列表文件的镜像保存到指定目录、也可以将其上传到镜像仓库中，但前提是您需要先登录镜像仓库。
 
-images-list.txt文件命名规范：
+[images-list.txt](https://gitee.com/iskongyu/files/raw/main/other/images-list.txt)文件命名规范：
 
 test ：表示一个镜像包集，下方区域是镜像列表，保存后以test命名
 
-https://raw.githubusercontent.com/kongyu666/files/main/other/images-list.txt
 
 1. 保存镜像离线包
 
