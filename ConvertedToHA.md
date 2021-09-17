@@ -29,3 +29,4 @@ kubeeasy add \
  --user root \
  --password 000000
 ```
+
