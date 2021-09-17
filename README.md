@@ -7,8 +7,6 @@ v1.2.0
 ![kube-vip1](https://gitee.com/iskongyu/files/raw/main/other/kube-vip1.png)
 ![kube-vip2](https://gitee.com/iskongyu/files/raw/main/other/kube-vip2.png)
 
-[ConvertedToHA](./ConvertedToHA.md)
-
 
 ## 要求
 
@@ -448,18 +446,16 @@ kubeeasy reset --force \
 
 1. 在线增加K8S节点
 
->  增加master节点只适用于高可用集群的模式
-
 ```shell
 kubeeasy add \
  --worker 10.24.3.14,10.24.3.15
  --user root \
  --password 000000
 ```
+> 从普通的K8S集群转换为高可用的K8S集群参考
+[ConvertedToHA](./ConvertedToHA.md)
 
 2. 离线增加K8S节点
-
->  增加master节点只适用于高可用集群的模式
 
 ```shell
 # 需要先安装依赖包
