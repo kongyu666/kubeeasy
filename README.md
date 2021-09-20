@@ -1,6 +1,6 @@
 ## 版本
 
-v1.2.0
+v1.2.1
 
 ## 架构
 
@@ -32,8 +32,8 @@ MEM：`4G及以上`
 ## 快速开始
 
 ```shell
-wget https://github.com/kongyu666/kubeeasy/releases/download/v1.2.0/kubeeasy-centos7.9-v1.2.0
-chmod +x kubeeasy-centos7.9-v1.2.0 && mv kubeeasy-centos7.9-v1.2.0 /usr/bin/kubeeasy
+wget https://github.com/kongyu666/kubeeasy/releases/download/v1.2.1/kubeeasy-centos7.9-v1.2.1
+chmod +x kubeeasy-centos7.9-v1.2.1 && mv kubeeasy-centos7.9-v1.2.1 /usr/bin/kubeeasy
 kubeeasy install kubernetes \
   --master 10.24.2.10 \
   --worker 10.24.2.11 \
