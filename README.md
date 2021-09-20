@@ -78,8 +78,8 @@ kubeeasy install kubernetes \
 下载kubeeasy，然后赋予执行权限并移动到/usr/bin目录下。
 
 ```shell
-wget https://github.com/kongyu666/kubeeasy/releases/download/v1.2.0/kubeeasy-centos7.9-v1.2.0
-chmod +x kubeeasy-centos7.9-v1.2.0 && mv kubeeasy-centos7.9-v1.2.0 /usr/bin/kubeeasy 
+wget https://github.com/kongyu666/kubeeasy/releases/download/v1.2.1/kubeeasy-centos7.9-v1.2.1
+chmod +x kubeeasy-centos7.9-v1.2.1 && mv kubeeasy-centos7.9-v1.2.1 /usr/bin/kubeeasy 
 ```
 
 ### 1.2 基础ssh配置
