@@ -602,14 +602,3 @@ kubeeasy set history \
  --user root \
  --password 000000
 ```
-
-
-
-
-
-
-
-
-
-
-
