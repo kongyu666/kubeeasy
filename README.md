@@ -452,7 +452,7 @@ kubeeasy add \
  --password 000000
 ```
 > 从普通的K8S集群转换为高可用的K8S集群参考
-[ConvertedToHA](./ConvertedToHA.md)
+[ConvertedToHA](./ConvertToHA.md)
 
 2. 离线增加K8S节点
 
