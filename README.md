@@ -480,7 +480,7 @@ kubeeasy add \
 >  删除操作会重置节点，包括删除K8S服务、docker数据等清空操作。
 
 ```shell
-kubeeasy add \
+kubeeasy delete \
  --worker 10.24.3.14,10.24.3.15
  --user root \
  --password 000000
