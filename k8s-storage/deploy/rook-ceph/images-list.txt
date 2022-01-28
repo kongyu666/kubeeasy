@@ -1,9 +1,0 @@
-swr.cn-north-1.myhuaweicloud.com/kongyu/ceph/ceph:master
-swr.cn-north-1.myhuaweicloud.com/kongyu/ceph/ceph:v1.7.0
-swr.cn-north-1.myhuaweicloud.com/kongyu/ceph/ceph:v16.2.5
-swr.cn-north-1.myhuaweicloud.com/kongyu/cephcsi/cephcsi:v3.4.0
-swr.cn-north-1.myhuaweicloud.com/kongyu/sig-storage/csi-attacher:v3.2.1
-swr.cn-north-1.myhuaweicloud.com/kongyu/sig-storage/csi-node-driver-registrar:v2.2.0
-swr.cn-north-1.myhuaweicloud.com/kongyu/sig-storage/csi-provisioner:v2.2.2
-swr.cn-north-1.myhuaweicloud.com/kongyu/sig-storage/csi-resizer:v1.2.0
-swr.cn-north-1.myhuaweicloud.com/kongyu/sig-storage/csi-snapshotter:v4.1.1
