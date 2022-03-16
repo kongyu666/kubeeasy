@@ -1,6 +1,6 @@
 ## 版本
 
-版本：kubeeasy-v1.3.0
+版本：kubeeasy-v1.3.1
 
 更新说明：
 
@@ -70,7 +70,7 @@ MEM：`4G及以上`
 将kubeeasy文件上传至预设的master节点/root目录，然后赋予执行权限并移动到/usr/bin目录下
 
 ```shell
-mv kubeeasy-v1.3.0 /usr/bin/kubeeasy && chmod +x /usr/bin/kubeeasy
+mv kubeeasy-v1.3.1 /usr/bin/kubeeasy && chmod +x /usr/bin/kubeeasy
 ```
 
 ### 1.2 集群安装依赖包
@@ -154,7 +154,7 @@ kubeeasy install upgrade-kernel \
 
 ### 1.6 部署K8S集群
 
-使用kubeeasy部署K8S集群，以下分为**普通集群**和**高可用集群**的安装方式，根据实际情况选择一种方案部署。安装后的K8S的版本为v1.21.3，使用docker作为容器运行时，网络组件使用calico网络，默认还安装kuboard图形化管理器和K8S存储类（local-hostpath），K8S的证书有效期为100年，且开启了证书轮换
+使用kubeeasy部署K8S集群，以下分为**普通集群**和**高可用集群**的安装方式，根据实际情况选择一种方案部署。安装后的K8S的版本为v1.21.3，使用docker作为容器运行时，网络组件使用calico网络，默认还安装kuboard图形化管理器和K8S存储类（openebs-hostpath），K8S的证书有效期为100年，且开启了证书轮换
 
 > 如需更改K8S的Pod网段，修改--pod-cidr参数相应的值
 
@@ -168,7 +168,7 @@ kubeeasy install kubernetes \
   --password 000000 \
   --version 1.21.3 \
   --pod-cidr 10.244.0.0/16 \
-  --offline-file ./kubeeasy-v1.3.0.tar.gz
+  --offline-file ./kubeeasy-v1.3.1.tar.gz
 ```
 
 2. 安装高可用k8s集群（master节点个数必须大于等于3）
@@ -182,7 +182,7 @@ kubeeasy install kubernetes \
   --version 1.21.3 \
   --virtual-ip 192.168.1.250 \
   --pod-cidr 10.244.0.0/16 \
-  --offline-file ./kubeeasy-v1.3.0.tar.gz
+  --offline-file ./kubeeasy-v1.3.1.tar.gz
 ```
 
 ## 其他功能
