@@ -306,6 +306,27 @@ kubeeasy images push \
 
 ### 其他
 
+集群优化系统配置
+
+```shell
+## 依赖于sshpass命令，需要先安装此命令
+yum -y install sshpass
+kubeeasy install precondition \
+  --host 192.168.1.201-192.168.1.203 \
+  --user root \
+  --password 000000
+```
+
+集群使用命令
+
+```shell
+kubeeasy get command \
+  --host 192.168.1.201-192.168.1.203 \
+  --user root \
+  --password 000000 \
+  --cmd "hostname"
+```
+
 集群免秘钥设置
 
 ```shell
