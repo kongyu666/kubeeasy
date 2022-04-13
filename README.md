@@ -148,7 +148,7 @@ kubeeasy install upgrade-kernel \
   --host 192.168.1.207-192.168.1.209 \
   --user root \
   --password 000000 \
-  --offline-file ./kernel-rpms-v5.14.3.tar.gz
+  --offline-file ./kernel-rpms-v5.17.2.tar.gz
 ```
 
 
@@ -310,7 +310,7 @@ kubeeasy images push \
 
 ```shell
 ## 依赖于sshpass命令，需要先安装此命令
-yum -y install sshpass
+rpm -ivh https://mirrors.aliyun.com/centos/7/extras/x86_64/Packages/sshpass-1.06-2.el7.x86_64.rpm
 kubeeasy install precondition \
   --host 192.168.1.201-192.168.1.203 \
   --user root \
@@ -347,7 +347,17 @@ kubeeasy create time \
   --password 000000
 ```
 
+集群系统指标检测(CPU Memory Disk)
+
+```shell
+kubeeasy check system \
+  --host 192.168.1.207-192.168.1.209 \
+  --user root \
+  --password 000000
+```
+
 集群连通性检测-ssh
+
 ```shell
 kubeeasy check ssh \
   --host 192.168.1.207-192.168.1.209 \
