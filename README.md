@@ -1,6 +1,6 @@
 ## 版本
 
-版本：kubeeasy-v1.3.1
+版本：kubeeasy-v1.3.2
 
 更新说明：
 
@@ -11,10 +11,6 @@
 5. 新增集群优化系统配置
 6. 新增集群使用命令输出
 7. 优化部分内容
-
-## 架构
-
-![kube-vip1](https://gitee.com/iskongyu/files/raw/main/other/kube-vip1.png)
 
 ## 要求
 
@@ -30,7 +26,7 @@ MEM：`4G及以上`
 
 ## 功能
 
-- 支持升级集群内核，升级后内核版本为：5.17.2
+- 支持升级集群内核，升级后内核版本为：5.17.9
 - 支持离线部署普通的k8s集群，k8s版本为：v1.21.3
 - 支持离线部署高可用k8s集群，k8s版本为：v1.21.3
 - K8S HA集群使用云原生的kube-vip，其自带VIP和负载均衡
@@ -47,20 +43,20 @@ MEM：`4G及以上`
 
 | **IP** **地址** | **主机名**        | **角色**                              |
 | :-------------- | ----------------- | ------------------------------------- |
-| 192.168.1.207   | k8s-maste-noder01 | master \| etcd \|  worker \| kube-vip |
-| 192.168.1.208   | k8s-master-node02 | master \| etcd \|  worker \| kube-vip |
-| 192.168.1.209   | k8s-master-node03 | master \| etcd \|  worker \| kube-vip |
-| 192.168.1.210   | k8s-worker-node1  | worker                                |
-| 192.168.1.211   | k8s-worker-node3  | worker                                |
+| 192.168.1.201   | k8s-maste-noder01 | master \| etcd \|  worker \| kube-vip |
+| 192.168.1.202   | k8s-master-node02 | master \| etcd \|  worker \| kube-vip |
+| 192.168.1.203   | k8s-master-node03 | master \| etcd \|  worker \| kube-vip |
+| 192.168.1.204   | k8s-worker-node1  | worker                                |
+| 192.168.1.205   | k8s-worker-node3  | worker                                |
 | 192.168.1.250   | /                 | 虚拟 IP 地址                          |
 
  普通集群模式主机列表
 
 | **IP** **地址** | **主机名**        | **角色**                  |
 | --------------- | ----------------- | ------------------------- |
-| 192.168.1.207   | k8s-maste-noder01 | master \| etcd \|  worker |
-| 192.168.1.208   | k8s-worker-node1  | worker                    |
-| 192.168.1.209   | k8s-worker-node2  | worker                    |
+| 192.168.1.201   | k8s-maste-noder01 | master \| etcd \|  worker |
+| 192.168.1.202   | k8s-worker-node1  | worker                    |
+| 192.168.1.203   | k8s-worker-node2  | worker                    |
 
  安装方式只有[离线版](#离线安装方式)，还有其他功能，在[其他功能](#其他功能)里面可以查看
 
@@ -73,7 +69,7 @@ MEM：`4G及以上`
 将kubeeasy文件上传至预设的master节点/root目录，然后赋予执行权限并移动到/usr/bin目录下
 
 ```shell
-mv kubeeasy-v1.3.1 /usr/bin/kubeeasy && chmod +x /usr/bin/kubeeasy
+mv kubeeasy-v1.3.2.sh /usr/bin/kubeeasy && chmod +x /usr/bin/kubeeasy
 ```
 
 ### 1.2 集群安装依赖包
@@ -82,7 +78,7 @@ mv kubeeasy-v1.3.1 /usr/bin/kubeeasy && chmod +x /usr/bin/kubeeasy
 
 ```shell
 kubeeasy install depend \
-  --host 192.168.1.207-192.168.1.209 \
+  --host 192.168.1.201-192.168.1.203 \
   --user root \
   --password 000000 \
   --offline-file ./centos-7-rpms.tar.gz
@@ -96,7 +92,7 @@ kubeeasy install depend \
 
 ```shell
 kubeeasy check ssh \
-  --host 192.168.1.207-192.168.1.209 \
+  --host 192.168.1.201-192.168.1.203 \
   --user root \
   --password 000000
 ```
@@ -106,8 +102,8 @@ kubeeasy check ssh \
 
 ```shell
 kubeeasy create ssh-keygen \
-  --master 192.168.1.207 \
-  --worker 192.168.1.208,192.168.1.209 \
+  --master 192.168.1.201 \
+  --worker 192.168.1.202,192.168.1.203 \
   --user root \
   --password 000000
 ```
@@ -121,7 +117,7 @@ kubeeasy create ssh-keygen \
 
 ```shell
 kubeeasy create mount-disk \
-  --host 192.168.1.207-192.168.1.209 \
+  --host 192.168.1.201-192.168.1.203 \
   --disk /dev/sdb \
   --mount-dir /data \
   --user root \
@@ -132,7 +128,7 @@ kubeeasy create mount-disk \
 
 ```shell
 kubeeasy mount \
-  --host 192.168.1.207 \
+  --host 192.168.1.201 \
   --disk /dev/sdb \
   --mount-dir /data \
   --user root \
@@ -148,10 +144,10 @@ kubeeasy mount \
 
 ```shell
 kubeeasy install upgrade-kernel \
-  --host 192.168.1.207-192.168.1.209 \
+  --host 192.168.1.201-192.168.1.203 \
   --user root \
   --password 000000 \
-  --offline-file ./kernel-rpms-v5.17.2.tar.gz
+  --offline-file ./kernel-rpms-v5.17.9.tar.gz
 ```
 
 
@@ -165,27 +161,27 @@ kubeeasy install upgrade-kernel \
 
 ```shell
 kubeeasy install kubernetes \
-  --master 192.168.1.207 \
-  --worker 192.168.1.208,192.168.1.209 \
+  --master 192.168.1.201 \
+  --worker 192.168.1.202,192.168.1.203 \
   --user root \
   --password 000000 \
   --version 1.21.3 \
   --pod-cidr 10.244.0.0/16 \
-  --offline-file ./kubeeasy-v1.3.1.tar.gz
+  --offline-file ./kubeeasy-v1.3.2.tar.gz
 ```
 
 2. 安装高可用k8s集群（master节点个数必须大于等于3）
 
 ```shell
 kubeeasy install kubernetes \
-  --master 192.168.1.206,192.168.1.207,192.168.1.208 \
-  --worker 192.168.1.209 \
+  --master 192.168.1.201,192.168.1.202,192.168.1.203 \
+  --worker 192.168.1.204 \
   --user root \
   --password 000000 \
   --version 1.21.3 \
   --virtual-ip 192.168.1.250 \
   --pod-cidr 10.244.0.0/16 \
-  --offline-file ./kubeeasy-v1.3.1.tar.gz
+  --offline-file ./kubeeasy-v1.3.2.tar.gz
 ```
 
 ## 其他功能
@@ -206,8 +202,8 @@ kubeeasy reset \
 
 ```shell
 kubeeasy reset --force \
-  --master 192.168.1.209 \
-  --worker 192.168.1.212 \
+  --master 192.168.1.201 \
+  --worker 192.168.1.202 \
   --user root \
   --password 000000
 ```
@@ -225,16 +221,16 @@ kubeeasy reset --force \
 ```shell
 # 需要先安装依赖包
 kubeeasy install depend \
-  --host 192.168.1.211,192.168.1.212 \
+  --host 192.168.1.204,192.168.1.205 \
   --user root \
   --password 000000 \
-  --offline-file dependencies/centos-7-rpms.tar.gz
+  --offline-file ./centos-7-rpms.tar.gz
 # 加入K8S集群
 kubeeasy add \
-  --worker 192.168.1.211,192.168.1.212
+  --worker 192.168.1.204,192.168.1.205
   --user root \
   --password 000000 \
-  --offline-file kubeeasy.tar.gz
+  --offline-file ./kubeeasy-v1.3.2.tar.gz
 ```
 
 ### 删除K8S节点
@@ -247,7 +243,7 @@ kubeeasy add \
 
 ```shell
 kubeeasy delete \
-  --worker 192.168.1.208,192.168.1.209
+  --worker 192.168.1.202,192.168.1.203
   --user root \
   --password 000000
 ```
@@ -262,7 +258,7 @@ kubeeasy delete \
 
 ```shell
 kubeeasy remove \
-  --worker 192.168.1.208,192.168.1.209
+  --worker 192.168.1.202,192.168.1.203
   --user root \
   --password 000000
 ```
@@ -275,7 +271,7 @@ kubeeasy remove \
 
 ```shell
 kubeeasy images load \
-  --host 192.168.1.207,192.168.1.208,192.168.1.209 \
+  --host 192.168.1.201,192.168.1.201,192.168.1.203 \
   --user root \
   --password 000000 \
   --offline-file test-images.tar.gz
@@ -334,8 +330,8 @@ kubeeasy get command \
 
 ```shell
 kubeeasy create ssh-keygen \
-  --master 192.168.200.11 \
-  --worker 192.168.200.12,192.168.200.13 \
+  --master 192.168.1.201 \
+  --worker 192.168.1.202,192.168.1.203 \
   --user root \
   --password 000000
 ```
@@ -344,8 +340,8 @@ kubeeasy create ssh-keygen \
 
 ```shell
 kubeeasy create time \
-  --master 192.168.1.207 \
-  --worker 192.168.1.208,192.168.1.209 \
+  --master 192.168.1.201 \
+  --worker 192.168.1.202,192.168.1.203 \
   --user root \
   --password 000000
 ```
@@ -354,7 +350,7 @@ kubeeasy create time \
 
 ```shell
 kubeeasy check system \
-  --host 192.168.1.207-192.168.1.209 \
+  --host 192.168.1.201-192.168.1.203 \
   --user root \
   --password 000000
 ```
@@ -363,7 +359,7 @@ kubeeasy check system \
 
 ```shell
 kubeeasy check ssh \
-  --host 192.168.1.207-192.168.1.209 \
+  --host 192.168.1.201-192.168.1.203 \
   --user root \
   --password 000000
 ```
@@ -371,14 +367,14 @@ kubeeasy check ssh \
 集群连通性检测-ping
 ```shell
 kubeeasy check ping \
-  --host 192.168.1.207-192.168.1.209
+  --host 192.168.1.201-192.168.1.203
 ```
 
 
 修改集群root密码
 ```shell
 kubeeasy create password \
-  --host 192.168.1.207-192.168.1.209 \
+  --host 192.168.1.201-192.168.1.203 \
   --user root \
   --password 000000 \
   --new-password 123456
@@ -388,7 +384,7 @@ kubeeasy create password \
 清除历史命令
 ```shell
 kubeeasy set history \
-  --host 192.168.1.207-192.168.1.209 \
+  --host 192.168.1.201-192.168.1.203 \
   --user root \
   --password 000000
 ```
