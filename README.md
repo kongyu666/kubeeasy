@@ -127,7 +127,7 @@ kubeeasy create mount-disk \
 2. 磁盘挂载（集群磁盘名不同时只能按顺序操作）
 
 ```shell
-kubeeasy mount \
+kubeeasy create mount-disk \
   --host 192.168.1.201 \
   --disk /dev/sdb \
   --mount-dir /data \
